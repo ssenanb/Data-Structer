@@ -7,4 +7,4 @@ dairesel tek yönlü bağlı liste (dtybl),
 
 Bu başlıkların her biri için düğüm oluşturma,düğüm yazdırma,eleman sayma,eleman arama,başa eleman ekleme/silme ve sona eleman ekleme/silme kodları yazılmıştır. Sadece tek yönlü bağlı liste için aradan eleman ekleme/silme işleminin kodu bulunmaktadır. 
 
-#Bu içerikte tüm kodlar C dilinde hazırlanmıştır.
+#Bu içerikte tüm kodlar C dilinde yazılmıştır.
