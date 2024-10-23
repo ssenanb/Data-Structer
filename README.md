@@ -14,3 +14,4 @@ Yığın (stack) veri yapısı diziler ve bağlı listeler ile oluşturulabilir.
 Kuyruk/sıra (queue) veri yapısı diziler ve bağlı listeler ile oluşturulabilir. Diziler kullanırsak bir yerden sonra eleman eklememeye başlayacak ve eleman sildikten sonra kaldığı yerden eleman eklemeye devam edecek.Bu bir sorundur ve hatalara yol açar. Elemanları kaydırarak veya bellekte boşa çıkan kısımları temizlersek sorun çözülebilir ama bu ekstra maliyete sebep olacaktır. Dolayısıyla bağlı listeleri kullanmak en doğru yol olacaktır. Yazdığım kodda enqueue,dequeue ve bastırma fonksiyonu yazdım. 
 
 #Bu içerikte tüm kodlar C dilinde yazılmıştır.
+#Yazılan kodlarda kullanıcının hata yapma ihtimalleri göz önünde bulundurularak yazılmamıştır. Sadece mantığı kavramak için yazılmış ve boş düğüm olmadığı varsayılmıştır.
