@@ -1,0 +1,113 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct n{
+    int data;
+    struct n *next;
+};
+
+typedef struct n node;
+node *root = NULL;
+
+node *add_head(int data){
+    node *newNode = (node*)malloc(sizeof(node));
+    newNode -> data = data;
+    newNode -> next = NULL;
+    if(root == NULL){
+        root = newNode;
+    }else{
+    newNode -> next = root;
+    root = newNode;
+    }
+}
+
+node *add_tail(int data){
+    node *newNode = (node*)malloc(sizeof(node));
+    newNode -> data = data;
+    newNode -> next = NULL;
+    if(root == NULL){
+    root = newNode;
+    }else{
+    node *temp = root;
+    while(temp -> next != NULL)
+        temp = temp -> next;
+    temp -> next = newNode;
+    }
+}
+void delete_head(){
+    if(root == NULL){
+        printf("this list is empty\n");
+        return;
+    }
+    else{
+        node *temp = root;
+        root = temp -> next;
+        free(temp);
+    }
+}
+void delete_tail(){
+    if(root == NULL){
+        printf("this list is empty");
+        return;
+    }
+    else{
+        node *temp = root;
+        while(temp -> next -> next!= NULL)
+            temp = temp -> next;
+        temp -> next = NULL;
+        free(temp -> next);
+    }
+}
+void find(int find){
+    node *temp = root;
+    while(temp != NULL){
+        if(find == temp -> data){
+            printf("element found\n");
+            return;
+        }
+        temp = temp -> next;
+    }
+    printf("element wasn't\n");
+}
+
+void counter(){
+    int counter = 0;
+    node *temp = root;
+    while(temp != NULL){
+        counter++;
+        temp = temp -> next;
+    }
+    printf("there are %d element",counter);
+    printf("\n");
+}
+
+void display(){
+    node* temp = root;
+    while(temp != NULL){
+        printf("%d ",temp -> data);
+        temp = temp -> next;
+    }
+    printf("\n");
+}
+
+
+int main(){
+    add_head(0);
+    add_tail(1);
+    add_head(2);
+    add_tail(3);
+    add_head(4);
+    add_tail(5);
+    add_head(6);
+    add_tail(7);
+    add_head(8);
+    display();
+    counter();
+    find(5);
+    find(10);
+    delete_head();
+    display();
+    delete_tail();
+    display();
+    return 0;
+}
