@@ -108,19 +108,24 @@ tree *delete(tree *node,int data){
 tree *min(tree *node){
     if(node == NULL)
         printf("tree empty\n");
-    else if(node -> left == NULL)
-        return node;
-    else
-        return min(node -> left);
+    else{
+        while(node -> left != NULL){
+            node = node -> left;
+        }
+        return node -> data;
+    }
 }
+    
 
 tree *max(tree *node){
     if(node == NULL)
         printf("tree empty\n");
-    else if(node -> right == NULL)
-        return node;
-    else
-        return max(node -> right);
+    else{
+       while(node -> right != NULL){
+           node = node -> right;
+        }
+    return node -> data;
+    }
 }
 
 tree *search(tree *node,int data){
