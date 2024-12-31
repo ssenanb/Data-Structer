@@ -40,7 +40,7 @@ int max(node *agac){
         agac = agac -> sag;
     return agac -> data;
 }
-//SİLME ÇOK ÖNEMLİ
+
 node * sil(node *agac,int data){
     if(agac == NULL)
         printf("agac bos\n");
