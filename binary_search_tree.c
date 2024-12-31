@@ -1,140 +1,155 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-struct node{
+struct n{
     int data;
-    struct node *right;
-    struct node *left;
+    struct n *sol;
+    struct n *sag;
 };
 
-typedef struct node tree;
+typedef struct n node;
 
-tree *root = NULL;
+node *ekle(node *agac,int data){
+    if(agac == NULL){
+        node *dugum = (node *)malloc(sizeof(node));
+        dugum -> data = data;
+        dugum -> sol = NULL;
+        dugum -> sag = NULL;
+        return dugum; // *
+    }else{
+        node *dugum = (node *)malloc(sizeof(node));
+        dugum -> data = data;
+        dugum -> sol = NULL;
+        dugum -> sag = NULL;
 
-tree *add(tree *node,int data);
-void in_order_to(tree *node);
-tree *delete(tree *node,int data);
-tree *min(tree *node);
-tree *max(tree *node);
-tree *search(tree *node,int data);
+        if(agac -> data > data)
+           agac -> sol = ekle(agac -> sol,data);
+        else
+            agac -> sag = ekle(agac -> sag ,data);
+    }
+    return agac;//* return önemli bunlarda!
+}
+
+int min(node *agac){
+    while(agac -> sol != NULL)
+        agac = agac -> sol;
+    return agac -> data;
+}
+int max(node *agac){
+    while(agac -> sag != NULL)
+        agac = agac -> sag;
+    return agac -> data;
+}
+//SİLME ÇOK ÖNEMLİ
+node * sil(node *agac,int data){
+    if(agac == NULL)
+        printf("agac bos\n");
+    else{
+        if(agac -> data == data){// kök silme
+            if(agac -> sol == NULL && agac -> sag == NULL)
+                return NULL;
+           else if (agac -> sag != NULL){
+                agac -> data = min(agac -> sag);//roota değeri getir
+                agac -> sag = sil(agac -> sag,min(agac -> sag));//roota getirdiğin değeri eski yerinden sil
+                return agac;            
+            }//üstte ağacı sağının en büyüğünü koyduk eğer sağ tamamen boşsa solun en küçüğünü koyacak aşağıda da bunu yaptık
+            else{
+                agac -> data = max(agac -> sol);//roota değeri getir
+                agac -> sol = sil(agac -> sol,max(agac -> sol));//roota getirdiğin değeri eski yerinden sil
+                return agac;
+            }
+        }else if(agac -> data < data){
+                agac -> sag = sil(agac -> sag,data);
+                return agac;
+        }else{//agac -> data > data
+                agac -> sol = sil(agac -> sol,data);
+                return agac;
+        }
+    }
+}
+
+node *ara(node *agac,int data){
+    if(agac == NULL)
+        return NULL;
+    else if(agac -> data == data)
+        return agac;
+    else if(agac -> data > data)
+        return ara(agac -> sol,data);
+    else
+        return ara(agac -> sag,data);
+}
+
+//sol kök sağ
+void inorder(node* agac){
+    if(agac != NULL){
+        inorder(agac -> sol);
+        printf("%d ",agac -> data);
+        inorder(agac -> sag);
+    }
+}
+//kök sol sağ
+void preorder(node *agac){
+    if(agac != NULL){
+        printf("%d ",agac -> data);
+        preorder(agac -> sol);
+        preorder(agac -> sag);
+    }
+}
+//sol sağ kök
+void postorder(node * agac){
+    if(agac != NULL){
+        postorder(agac-> sol);
+        postorder(agac -> sag);
+        printf("%d ",agac -> data);
+    }
+}
 
 int main(){
-    root = add(root,10);
-    root = add(root,5);
-    root = add(root,20);
-    root = add(root,4);
-    root = add(root,3);
-    root = add(root,25);
-    root = add(root,12);
-    in_order_to(root);
+    node *root = NULL;
+
+    root = ekle(root,10);
+    root = ekle(root,15);
+    root = ekle(root,5);
+    root = ekle(root,25);
+    root = ekle(root,2);
+    root = ekle(root,6);
+    root = ekle(root,11);
+    root = ekle(root,30);
+
+    printf("inorder: ");
+    inorder(root);
     printf("\n");
-    delete(root,10);
-    in_order_to(root);
+    printf("preorder: ");
+    preorder(root);
     printf("\n");
-    delete(root,4);
-    in_order_to(root);
+    printf("postorder: ");
+    postorder(root);
     printf("\n");
-    printf("min: %d\n",min(root)-> data);
-    printf("max: %d\n",max(root) -> data);
 
-    tree *result = search(root,10);
-    if (result != NULL) {
-        printf("Found: %d\n", result->data);
-    } else {
-        printf("Not found\n");
-    }
-
-    result = search(root, 20);
-    if (result != NULL) {
-        printf("Found: %d\n", result->data);
-    } else {
-        printf("Not found\n");
-    }
-    return 0;
-}
-
-void in_order_to(tree *node){
-    if(node != NULL){
-        in_order_to(node -> left);
-        printf("%d ",node -> data);
-        in_order_to(node -> right);
-    }
-}
-
-tree *add(tree *node,int data){
-    tree *newNode = (tree*)malloc(sizeof(tree));
-    newNode -> data = data;
-    newNode -> right = NULL;
-    newNode -> left = NULL;
-
-    if(node == NULL)
-        return newNode;
-    else{
-        if(node -> data > data)
-                node -> left = add(node -> left,data);
-        else
-                node -> right = add(node -> right,data);
-        }
-    return node;
+    root = sil(root,10);
+    printf("inorder: ");
+    inorder(root);
     printf("\n");
-    }
 
-tree *delete(tree *node,int data){
-    if(node == NULL)
-        printf("empty tree\n");
-    else if(node -> data > data)
-        node -> left = delete(node -> left,data);
-    else if(node -> data < data) 
-        node -> right = delete(node -> right,data);
-    else{
-        // node has 0 or 1 child
-        if(node -> left == NULL){
-            tree *temp = node -> right;
-            free(node);
-            return temp;
-        }else if(node -> right == NULL){
-            tree *temp = node -> right;
-            free(node);
-            return temp;
-        }
-        //node has 2 childs
-        tree *temp = min(node -> right);
-        node -> data = temp -> data;
-        node -> right = delete(node -> right, temp -> data);
-    }
-    return node;
-}
+    root = sil(root,2);
+    printf("inorder: ");
+    inorder(root);
+    printf("\n");
 
-tree *min(tree *node){
-    if(node == NULL)
-        printf("tree empty\n");
-    else{
-        while(node -> left != NULL){
-            node = node -> left;
-        }
-        return node -> data;
-    }
-}
+
+    if(ara(root,25) != NULL)
+        printf("bulundu\n");
+    else
+        printf("bulunamadı\n");
+
+    if(ara(root,100) != NULL)
+        printf("bulundu\n");
+    else
+        printf("bulunamadı\n");
+
+    printf("%d ",min(root));
+    printf("%d ",max(root));
     
 
-tree *max(tree *node){
-    if(node == NULL)
-        printf("tree empty\n");
-    else{
-       while(node -> right != NULL){
-           node = node -> right;
-        }
-    return node -> data;
-    }
-}
-
-tree *search(tree *node,int data){
-    if(node == NULL)
-        return NULL;
-    else if(node -> data == data)
-        return node;
-    else if(node -> data > data)
-        return search(node -> left,data);
-    else if(node -> data < data)
-        return search(node -> right, data);
+    return 0;
 }
